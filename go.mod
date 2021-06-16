@@ -1,4 +1,4 @@
-module github.com/tenra
+module my-workation
 
 go 1.16
 

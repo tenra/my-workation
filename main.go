@@ -2,14 +2,15 @@ package main
 
 import "github.com/gin-gonic/gin"
 
-import "net/http"
-
 func main() {
-    engine:= gin.Default()
-    engine.GET("/", func(c *gin.Context) {
-        c.JSON(http.StatusOK, gin.H{
-            "message": "hello myWorkation",
-        })
+    router := gin.Default()
+    router.LoadHTMLGlob("templates/*.html")
+
+    date := "myWorkation＊"
+
+    router.GET("/", func(c *gin.Context){
+        c.HTML(200, "index.html", gin.H{"date": date})
     })
-    engine.Run(":3001")
+
+    router.Run()
 }
