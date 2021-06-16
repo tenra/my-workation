@@ -6,12 +6,15 @@ services:
     volumes:
       - ./:/my-workation
     tty: true
+    stdin_open: true
     command: /bin/bash
     build:
       context: .
       dockerfile: build/Dockerfile
     ports:
       - 8080:8080
+    depends_on:
+      - "db"
   db:
     image: mysql:8.0
     environment:

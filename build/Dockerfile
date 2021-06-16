@@ -5,6 +5,9 @@ COPY go.sum /my-workation/go.sum
 WORKDIR /my-workation
 RUN ls
 RUN go mod download
+RUN go get github.com/gin-gonic/gin
+RUN go get github.com/go-sql-driver/mysql
+RUN go get github.com/jinzhu/gorm
 
 COPY . /my-workation
 
