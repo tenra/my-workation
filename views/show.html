@@ -1,0 +1,8 @@
+<body>
+  <h2>詳細</h2>
+
+  <form method="post" action="/update/{{.place.ID}}">
+    <p>内容<input type="text" name="place" size="30" value="{{.place.Content}}" ></p>
+    <p><input type="submit" value="Send"></p>
+  </form>
+</body>
