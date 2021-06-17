@@ -107,7 +107,7 @@ func main() {
   defer db.Close()
 
   router := gin.Default()
-  router.LoadHTMLGlob("views/*.html")
+  router.LoadHTMLGlob("templates/*.html")
 
   // 一覧
   router.GET("/", func(c *gin.Context) {
@@ -131,7 +131,7 @@ func main() {
 	})
 
 	// Place詳細
-	router.GET("/show/:id", func(c *gin.Context) {
+	router.GET("/edit/:id", func(c *gin.Context) {
 		n := c.Param("id")
 		// パラメータから受け取った値をint化
 		id, err := strconv.Atoi(n)
@@ -139,7 +139,7 @@ func main() {
 			panic(err)
 		}
 		place := getPlace(id)
-		c.HTML(200, "show.html", gin.H{"place": place})
+		c.HTML(200, "edit.html", gin.H{"place": place})
 	})
 
 	// Place更新
