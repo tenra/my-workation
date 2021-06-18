@@ -102,12 +102,14 @@ func deletePlace(id int) {
 
 
 func main() {
-  db := gormConnect()
+  /*db := gormConnect()
   db.AutoMigrate(&User{}, &Place{})
-  defer db.Close()
+  defer db.Close()*/
 
   router := gin.Default()
   router.LoadHTMLGlob("templates/*.html")
+
+  dbInit()
 
   // 一覧
   router.GET("/", func(c *gin.Context) {
