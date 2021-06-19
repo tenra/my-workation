@@ -2,11 +2,11 @@
   <h1>削除確認</h1>
   <p>本当に削除しますか？</p>
   <ul>
-      <li>内容： {{.place.Content}}</li>
-      <li>作成時間： {{.place.CreatedAt}}</li>
+      <li>内容： {{.spot.Content}}</li>
+      <li>作成時間： {{.spot.CreatedAt}}</li>
   </ul>
 
-  <form method="post" action="/delete/{{.place.ID}}">
+  <form method="post" action="/delete/{{.spot.ID}}">
       <p><input type="submit" value="削除"></p>
       <p><a href="/">戻る</a></p>
   </form>

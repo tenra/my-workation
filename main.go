@@ -20,7 +20,7 @@ type User struct {
   Email string
 }
 
-type Place struct {
+type Spot struct {
 	gorm.Model
 	Content string
 }
@@ -49,7 +49,7 @@ func dbInit() {
 	db := gormConnect()
 	// コネクション解放
 	defer db.Close()
-	db.AutoMigrate(&Place{})
+	db.AutoMigrate(&Spot{})
 	db.AutoMigrate(&User{})
 }
 
@@ -58,52 +58,52 @@ func dbInsert(content string) {
 	db := gormConnect()
 	defer db.Close()
 	// Insert処理
-	db.Create(&Place{Content: content})
+	db.Create(&Spot{Content: content})
 }
 
 // db更新
-func dbUpdate(id int, placeText string) {
+func dbUpdate(id int, spotText string) {
 	db := gormConnect()
-	var place Place
-	db.First(&place, id)
-	place.Content = placeText
-	db.Save(&place)
+	var spot Spot
+	db.First(&spot, id)
+	spot.Content = spotText
+	db.Save(&spot)
 	db.Close()
 }
 
-// Place全件取得
-func getAllPlaces() []Place {
+// Spot全件取得
+func getAllSpots() []Spot {
 	db := gormConnect()
 
 	defer db.Close()
-	var places []Place
+	var spots []Spot
 	// FindでDB名を指定して取得した後、orderで登録順に並び替え
-	db.Order("created_at desc").Find(&places)
-	return places
+	db.Order("created_at desc").Find(&spots)
+	return spots
 }
 
-// Place一件取得
-func getPlace(id int) Place {
+// Spot一件取得
+func getSpot(id int) Spot {
 	db := gormConnect()
-	var place Place
-	db.First(&place, id)
+	var spot Spot
+	db.First(&spot, id)
 	db.Close()
-	return place
+	return spot
 }
 
-// Place削除
-func deletePlace(id int) {
+// Spot削除
+func deleteSpot(id int) {
 	db := gormConnect()
-	var place Place
-	db.First(&place, id)
-	db.Delete(&place)
+	var spot Spot
+	db.First(&spot, id)
+	db.Delete(&spot)
 	db.Close()
 }
 
 
 func main() {
   /*db := gormConnect()
-  db.AutoMigrate(&User{}, &Place{})
+  db.AutoMigrate(&User{}, &Spot{})
   defer db.Close()*/
 
   router := gin.Default()
@@ -113,17 +113,17 @@ func main() {
 
   // 一覧
   router.GET("/", func(c *gin.Context) {
-    places := getAllPlaces()
-    c.HTML(200, "index.html", gin.H{"places": places})
+    spots := getAllSpots()
+    c.HTML(200, "index.html", gin.H{"spots": spots})
   })
 
-  // Place登録
+  // Spot登録
 	router.POST("/new", func(c *gin.Context) {
-		var form Place
+		var form Spot
 		// バリデーション処理
 		if err := c.Bind(&form); err != nil {
-			places := getAllPlaces()
-			c.HTML(http.StatusBadRequest, "index.html", gin.H{"places": places, "err": err})
+			spots := getAllSpots()
+			c.HTML(http.StatusBadRequest, "index.html", gin.H{"spots": spots, "err": err})
 			c.Abort()
 		} else {
 			content := c.PostForm("content")
@@ -132,7 +132,7 @@ func main() {
 		}
 	})
 
-	// Place詳細
+	// Spot詳細
 	router.GET("/edit/:id", func(c *gin.Context) {
 		n := c.Param("id")
 		// パラメータから受け取った値をint化
@@ -140,41 +140,41 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		place := getPlace(id)
-		c.HTML(200, "edit.html", gin.H{"place": place})
+		spot := getSpot(id)
+		c.HTML(200, "edit.html", gin.H{"spot": spot})
 	})
 
-	// Place更新
+	// Spot更新
 	router.POST("/update/:id", func(c *gin.Context) {
 		n := c.Param("id")
 		id, err := strconv.Atoi(n)
 		if err != nil {
 			panic("ERROR")
 		}
-		place := c.PostForm("place")
-		dbUpdate(id, place)
+		spot := c.PostForm("spot")
+		dbUpdate(id, spot)
 		c.Redirect(302, "/")
 	})
 
-	// Place削除確認
+	// Spot削除確認
 	router.GET("/delete_confirm/:id", func(c *gin.Context) {
 		n := c.Param("id")
 		id, err := strconv.Atoi(n)
 		if err != nil {
 			panic("ERROR")
 		}
-		place := getPlace(id)
-		c.HTML(200, "delete.html", gin.H{"place": place})
+		spot := getSpot(id)
+		c.HTML(200, "delete.html", gin.H{"spot": spot})
 	})
 
-	// Place削除
+	// Spot削除
 	router.POST("/delete/:id", func(c *gin.Context) {
 		n := c.Param("id")
 		id, err := strconv.Atoi(n)
 		if err != nil {
 			panic("ERROR")
 		}
-		deletePlace(id)
+		deleteSpot(id)
 		c.Redirect(302, "/")
 
 	})
